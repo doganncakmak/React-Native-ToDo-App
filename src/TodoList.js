@@ -4,50 +4,49 @@ import { TodosContext } from './TodosContext'
 import { SwipeListView } from 'react-native-swipe-list-view'
 import uuid from 'uuid-random'
 import { FontAwesome5 } from '@expo/vector-icons'
-import { Box, NativeBaseProvider, VStack } from 'native-base'
+
+const Lineargraident = require("expo-linear-gradient").LinearGradient;
 
 const TodoList = () => {
-    const { state, dispatch } = useContext(TodosContext)
-    const { todoText, setTodoText } = useState( '' )
-    const { editMode , setEditMode } = useState(false)
-    const { editTodo, setEditTodo } = useState(null)
-    const buttonTitle = editMode ? "Edit" : "Add" ;
+    const { state, dispatch } = useContext(TodosContext);
+    const [todoText, setTodoText ] = useState('')
+    const [editMode, setEditMode] = useState(false)
+    const [editTodo, setEditTodo] = useState(null)
+    const buttonTitle = editMode ? "edit" : "add";
 
     const handleSubmit = () => {
         if(editMode){
-            dispatch({type : 'edit', payload:{...editTodo, text:todoText}})
+            dispatch({type: 'edit', payload:{...editTodo, text:todoText}})
             setEditMode(false)
             setEditTodo(null)
         }
-
         else{
-            const newTodo = {id: uuid(), text:todoText};
-            dispatch({type:'add', payload:{...newTodo}})
+            const newTodo = {id: uuid(), text: todoText};
+            dispatch({type: 'add', payload:{...newTodo}})
         }
         setTodoText('') //yeni bir todo ekledikten sonra alanı temizle
     }
 
     const renderItem = (data) => {
-        <Box
-           bg={{
-               linearGradient: {
-                   color:["lightblue.300", "violet.800"],
-                   start:[0,0,0],
-                   end:[1,0]
-               }
-           }}
-           p='12'
-           rounded='md'
-           _text={{
-               fontsize:"md",
-               fontWeight:"medium",
-               color:"warmGray.50",
-               textAlign:"center"
-           }}
+        <Box 
+            bg={{
+                linearGradient: {
+                    color:["lightblue.300", "violet.800"],
+                    start:[0,0,0],
+                    end:[1,0]
+                }
+            }}
+            p='12'
+            rounded='x1'
+            _text={{
+                fontSize: "md",
+                fontWeight: "medium",
+                color: "warmGray.50",
+                textAlign: "center",
+            }}
         >
             {data.item.text}
-        </Box>    
-
+        </Box>
     };
 
     const renderHiddenItem = (data, rowMap) => (
@@ -62,7 +61,7 @@ const TodoList = () => {
     );
 
     const deleteRow = (todo) => {
-        dispatch({type:'delete', payload:todo});
+        dispatch({type: 'delete', payload:todo});
     };
 
     const editRow = (todo, rowMap) => {
@@ -71,37 +70,35 @@ const TodoList = () => {
         setEditTodo(todo);
         if (rowMap[todo.id]){
             rowMap[todo.id].closeRow();
-        }
-    };
-
+        };
+    }
     return (
         <View style={{flex:1, marginTop:60}}>
             <View style={{marginLeft:5, marginBottom:10}}>
                 <VStack w="100%" space={5} alignSelf="center">
-                    <Heading fontsize="2*1">To Do</Heading>
-                    <View style={{flexDirection:'row', marginRight:60, marginLeft:2}}>
+                    <Heading fontSize="2x1" >To-Do</Heading>
+                    <View style={{fllexDirection:'row', marginRight:60, marginLeft:2}}>
                         <Input
                             placeholder="Enter To-Do"
                             onChangeText={text => setTodoText(text)}
                             value={todoText}
-                            variant='filed'
+                            variant='filled'
                             width='100%'
-                            borderradius={10}
+                            borderRadius={10}
                             py="1"
                             px="2"
                             borderWidth="7"
-                            InputLeftElement={<Icon ml='2' size='7' color='gray.100.400'
-                            as={<FontAwesome5 name='pencil-art' />} />}
+                            InputLeftElement={<Icon ml='2' size='7' color='gray.100'
+                            as={<FontAwesome5 name='pencil-alt' />} />}
                         />
-                        <Button
-                            onPress={handleSubmit}
+
+                        <Button 
+                            onPres={handleSubmit}
                             title={buttonTitle}
                             stylee={{height:20}}
-                        />        
+                        />
                     </View>
-
                 </VStack>
-
             </View>
             <SwipeListView
                 data={state.todos}
@@ -109,17 +106,15 @@ const TodoList = () => {
                 renderHiddenItem={renderHiddenItem}
                 leftOpenValue={75}
                 rightOpenValue={-75}
-            />     
+            />
         </View>
     )
 }
-
 const config = {
     dependencies: {
-        "linearGradient":linearGradient
+        "linear-graident": Lineargraident
     }
 };
-
 export default () => {
     return(
         <NativeBaseProvider config={config}>
@@ -127,12 +122,11 @@ export default () => {
         </NativeBaseProvider>
     )
 }
-
 const styles = StyleSheet.create({
     rowBack:{
         alignItems:'center',
-        backgroundColor:'#000',
-        flex:1,
+        backgroundColor: '#000', 
+        flex:1, 
         flexDirection:'row',
         justifyContent:'space-around',
         paddingLeft:15,
@@ -141,10 +135,10 @@ const styles = StyleSheet.create({
         alignItems:'center',
         bottom:0,
         justifyContent:'center',
-        position:'absolute',
+        position: 'absolute',
         top:0,
         width:75,
-        backgroundColor:'red',
+        backgroundColor: 'red',
         right:0
     }
 })
