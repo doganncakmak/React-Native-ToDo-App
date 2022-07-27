@@ -1,2 +1,2 @@
-# React-Native-ToDo-App
-This project build with React Native.
+# React-Native-Expo-ToDoList
+This ToDo List build with React Native and Expo.
